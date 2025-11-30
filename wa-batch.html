@@ -1,0 +1,485 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>WhatsApp Batch Opener</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.whatsapp-icon {
+  color: #25D366;
+  font-size: 2.2rem;
+}
+
+.header p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.form-group label i {
+  margin-right: 8px;
+  color: #3498db;
+  width: 16px;
+}
+
+textarea, input {
+  width: 100%;
+  border: 2px solid #e1e8ed;
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: #ffffff;
+}
+
+textarea:focus, input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  transform: translateY(-1px);
+}
+
+textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+#message {
+  height: 100px;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-group i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+  z-index: 1;
+}
+
+.input-group input {
+  padding-left: 45px;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+button {
+  flex: 1;
+  min-width: 140px;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#openBtn {
+  background: linear-gradient(135deg, #25D366, #20c55a);
+  color: white;
+}
+
+#openBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+}
+
+#nextBtn {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+}
+
+#nextBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+}
+
+#nextBtn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#resetBtn {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+}
+
+#resetBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+}
+
+.status-card {
+  margin-top: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  border-left: 4px solid #3498db;
+}
+
+#info {
+  color: #2c3e50;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-icon {
+  font-size: 1.2rem;
+  color: #3498db;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #ecf0f1;
+  border-radius: 4px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.tips {
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(52, 152, 219, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.tips h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tips ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.tips li {
+  margin-bottom: 8px;
+  padding-left: 25px;
+  position: relative;
+  color: #34495e;
+  line-height: 1.5;
+}
+
+.tips li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #27ae60;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 25px;
+    margin: 10px;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  button {
+    min-width: auto;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>
+      <i class="fab fa-whatsapp whatsapp-icon"></i>
+      WhatsApp Batch Opener
+    </h1>
+    <p>Efficiently send messages to multiple contacts with ease</p>
+  </div>
+
+  <form>
+    <div class="form-group">
+      <label for="numbers">
+        <i class="fas fa-phone"></i>
+        Phone Numbers (one per line, any format)
+      </label>
+      <textarea 
+        id="numbers" 
+        placeholder="Examples:&#10;+91 98765 43210&#10;919812345678&#10;9876543210&#10;+1-555-123-4567"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="message">
+        <i class="fas fa-comment-alt"></i>
+        Message to Prefill
+      </label>
+      <textarea 
+        id="message" 
+        placeholder="Enter your message here. This will be pre-filled in WhatsApp chat."
+      >Hi, here's the info you requested.</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="cc">
+        <i class="fas fa-globe"></i>
+        Country Code Override (Optional)
+      </label>
+      <div class="input-group">
+        <i class="fas fa-flag"></i>
+        <input 
+          id="cc" 
+          placeholder="e.g. 91 for India, 1 for US/Canada" 
+          maxlength="3"
+        />
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="button" id="openBtn">
+        <i class="fas fa-play"></i>
+        Start Batch Process
+      </button>
+      <button type="button" id="nextBtn" disabled>
+        <i class="fas fa-arrow-right"></i>
+        Next Contact
+      </button>
+      <button type="button" id="resetBtn">
+        <i class="fas fa-redo"></i>
+        Reset All
+      </button>
+    </div>
+  </form>
+
+  <div class="status-card">
+    <div id="info">
+      <i class="fas fa-info-circle status-icon"></i>
+      <span>Ready to start. Enter phone numbers and click "Start Batch Process".</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <div class="tips">
+    <h3>
+      <i class="fas fa-lightbulb"></i>
+      Usage Tips
+    </h3>
+    <ul>
+      <li>Phone numbers can be in any format: +91-9876543210, 919876543210, or 9876543210</li>
+      <li>Use country code override for local numbers (e.g., 91 for India)</li>
+      <li>The message will be pre-filled in WhatsApp - you can edit it before sending</li>
+      <li>Each click opens a new WhatsApp chat tab in your browser</li>
+      <li>Make sure WhatsApp Web is logged in before starting</li>
+      <li>You can add images or files in WhatsApp after the message loads</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+function digitsOnly(s){
+  return s.replace(/\D/g,'');
+}
+function normalize(n, defaultCC){
+  let d = digitsOnly(n);
+  if(!d) return null;
+  // if begins with country code (assume length>10) or has leading 0? simple heuristic:
+  if(defaultCC && d.length <= 10) d = defaultCC + d;
+  return d;
+}
+function waLink(number, text){
+  return `https://web.whatsapp.com/send?phone=${number}&text=${encodeURIComponent(text)}`;
+}
+
+let list = [], idx = 0;
+const info = document.getElementById('info');
+const progressFill = document.getElementById('progressFill');
+
+function updateStatus(message, iconClass = 'fas fa-info-circle') {
+  const statusIcon = document.querySelector('.status-icon');
+  const statusText = info.querySelector('span');
+  
+  statusIcon.className = `status-icon ${iconClass}`;
+  statusText.textContent = message;
+}
+
+function updateProgress() {
+  if (list.length === 0) {
+    progressFill.style.width = '0%';
+    return;
+  }
+  const progress = ((idx + 1) / list.length) * 100;
+  progressFill.style.width = `${progress}%`;
+}
+
+function validateInputs() {
+  const numbers = document.getElementById('numbers').value.trim();
+  const openBtn = document.getElementById('openBtn');
+  
+  if (numbers.length === 0) {
+    openBtn.style.opacity = '0.6';
+    openBtn.style.cursor = 'not-allowed';
+    return false;
+  } else {
+    openBtn.style.opacity = '1';
+    openBtn.style.cursor = 'pointer';
+    return true;
+  }
+}
+
+// Real-time validation
+document.getElementById('numbers').addEventListener('input', validateInputs);
+document.getElementById('cc').addEventListener('input', function(e) {
+  // Only allow numbers
+  this.value = this.value.replace(/\D/g, '');
+});
+
+document.getElementById('openBtn').onclick = () => {
+  if (!validateInputs()) {
+    updateStatus('Please enter at least one phone number.', 'fas fa-exclamation-triangle');
+    return;
+  }
+
+  const raw = document.getElementById('numbers').value.trim().split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  const cc = document.getElementById('cc').value.trim();
+  const msg = document.getElementById('message').value || '';
+  
+  updateStatus('Processing phone numbers...', 'fas fa-spinner fa-spin');
+  
+  // Small delay to show processing state
+  setTimeout(() => {
+    list = raw.map(r => normalize(r, cc)).filter(Boolean);
+    
+    if(list.length === 0){ 
+      updateStatus('No valid phone numbers found. Please check your input format.', 'fas fa-exclamation-triangle');
+      return; 
+    }
+    
+    idx = 0;
+    window.open(waLink(list[idx], msg), "_blank", "noopener,noreferrer");
+    updateStatus(`Opened chat ${idx+1} of ${list.length}. Send your message, then click "Next Contact".`, 'fas fa-check-circle');
+    updateProgress();
+    document.getElementById('nextBtn').disabled = false;
+  }, 500);
+};
+
+document.getElementById('nextBtn').onclick = () => {
+  const msg = document.getElementById('message').value || '';
+  idx++;
+  
+  if(idx >= list.length){
+    updateStatus('🎉 All messages sent successfully! Process completed.', 'fas fa-trophy');
+    document.getElementById('nextBtn').disabled = true;
+    updateProgress();
+    return;
+  }
+  
+  window.open(waLink(list[idx], msg), "_blank", "noopener,noreferrer");
+  updateStatus(`Opened chat ${idx+1} of ${list.length}. Send your message, then click "Next Contact".`, 'fas fa-check-circle');
+  updateProgress();
+};
+
+document.getElementById('resetBtn').onclick = () => {
+  if (confirm('Are you sure you want to reset? This will clear all progress.')) {
+    list = []; 
+    idx = 0;
+    document.getElementById('nextBtn').disabled = true;
+    document.getElementById('numbers').value = '';
+    document.getElementById('message').value = 'Hi, here\'s the info you requested.';
+    document.getElementById('cc').value = '';
+    updateStatus('Reset completed. Ready to start a new batch process.', 'fas fa-info-circle');
+    updateProgress();
+    validateInputs();
+  }
+};
+
+// Initialize
+validateInputs();
+</script>
+</body>
+</html>
