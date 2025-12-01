@@ -1,0 +1,5 @@
+flask==2.3.3  # Flask web framework
+flask-cors==4.0.0  # CORS support for Flask
+pyautogui==0.9.54  # PyAutoGUI for reliable keyboard and mouse automation
+pillow==10.0.1  # PIL for image processing
+requests==2.31.0  # Requests for HTTP requests
