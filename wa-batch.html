@@ -1,203 +1,236 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <title>WhatsApp Batch Opener</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<!-- Styles -->
 <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <h1>
-      <i class="fab fa-whatsapp whatsapp-icon"></i>
-      WhatsApp Batch Opener
-    </h1>
-    <p>Efficiently send messages to multiple contacts with ease</p>
-  </div>
-
-  <form>
-    <div class="form-group">
-      <label for="numbers">
-        <i class="fas fa-phone"></i>
-        Phone Numbers (one per line, any format)
-      </label>
-      <textarea 
-        id="numbers" 
-        placeholder="Examples:&#10;+91 98765 43210&#10;919812345678&#10;9876543210&#10;+1-555-123-4567"
-      ></textarea>
-    </div>
-
-    <div class="form-group">
-      <label for="message">
-        <i class="fas fa-comment-alt"></i>
-        Message to Prefill
-      </label>
-      <textarea 
-        id="message" 
-        placeholder="Enter your message here. This will be pre-filled in WhatsApp chat."
-      >Hi, here's the info you requested.</textarea>
-    </div>
-
-    <div class="form-group">
-      <label for="cc">
-        <i class="fas fa-globe"></i>
-        Country Code Override (Optional)
-      </label>
-      <div class="input-group">
-        <i class="fas fa-flag"></i>
-        <input 
-          id="cc" 
-          placeholder="e.g. 91 for India, 1 for US/Canada" 
-          maxlength="3"
-        />
+  
+<div class="app-layout">
+  <header class="app-header">
+    <div class="header-content">
+      <div class="brand">
+        <div class="logo-box">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <div class="brand-text">
+          <h1>WhatsApp Batch Opener</h1>
+          <p>Efficiently send messages to multiple contacts</p>
+        </div>
       </div>
     </div>
+  </header>
 
-    <div class="automation-section">
-      <h3 class="section-title">
-        <i class="fas fa-robot"></i>
-        Automation Settings
-      </h3>
-      <p class="section-description">Configure automatic actions for each contact</p>
+  <main class="main-content">
+    <div class="content-wrapper">
       
-      <div class="automation-grid">
-        <div class="automation-step">
-          <div class="step-header">
-            <input type="checkbox" id="enableNextContact" checked>
-            <label for="enableNextContact">
-              <i class="fas fa-arrow-right"></i>
-              Next Contact
-            </label>
+      <div class="card main-card">
+        <form class="main-form">
+          <div class="form-section">
+            <h2 class="section-title">Message Details</h2>
+            
+            <div class="form-row">
+              <div class="form-group flex-2">
+                <label for="numbers">Phone Numbers</label>
+                <div class="input-wrapper">
+                  <textarea 
+                    id="numbers" 
+                    placeholder="Examples:&#10;+91 98765 43210&#10;919812345678&#10;9876543210&#10;+1-555-123-4567"
+                  ></textarea>
+                </div>
+                <div class="helper-text">Enter one number per line. Any format is accepted.</div>
+              </div>
+              
+              <div class="form-group flex-1">
+                <label for="cc">Country Code Override</label>
+                <div class="input-wrapper with-icon">
+                  <i class="fas fa-flag input-icon"></i>
+                  <input 
+                    id="cc" 
+                    placeholder="e.g. 91 for India" 
+                    maxlength="3"
+                  />
+                </div>
+                <div class="helper-text">Optional. Prepended if not included.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Prefilled Message</label>
+              <div class="input-wrapper">
+                <textarea 
+                  id="message" 
+                  placeholder="Enter your message here. This will be pre-filled in WhatsApp chat."
+                >Hi, here's the info you requested.</textarea>
+              </div>
+            </div>
           </div>
-          <div class="step-controls">
-            <label>Delay (seconds):</label>
-            <input type="number" id="delayNextContact" value="40" min="0" max="60" step="0.5">
+          
+          <hr class="divider" />
+          
+          <div class="form-section">
+            <h2 class="section-title">Automation Settings</h2>
+            <p class="section-desc">Configure automatic actions for each contact.</p>
+            
+            <div class="automation-grid">
+              
+              <div class="automation-step">
+                <div class="auto-header">
+                  <label class="checkbox-wrapper">
+                    <input type="checkbox" id="enableNextContact" checked>
+                    <span class="checkmark"></span>
+                    <span class="auto-title">Next Contact</span>
+                  </label>
+                  <div class="badge">Auto</div>
+                </div>
+                <div class="auto-body">
+                  <p class="auto-desc">Proceed to next number</p>
+                  <div class="delay-input">
+                    <label>Delay (s)</label>
+                    <input type="number" id="delayNextContact" value="40" min="0" max="60" step="0.5">
+                  </div>
+                </div>
+              </div>
+
+              <div class="automation-step">
+                <div class="auto-header">
+                  <label class="checkbox-wrapper">
+                    <input type="checkbox" id="enablePaste" checked>
+                    <span class="checkmark"></span>
+                    <span class="auto-title">Paste Content</span>
+                  </label>
+                  <div class="badge">Ctrl+V</div>
+                </div>
+                <div class="auto-body">
+                  <p class="auto-desc">Paste from clipboard</p>
+                  <div class="delay-input">
+                    <label>Delay (s)</label>
+                    <input type="number" id="delayPaste" value="25" min="0" max="60" step="0.5">
+                  </div>
+                </div>
+              </div>
+
+              <div class="automation-step">
+                <div class="auto-header">
+                  <label class="checkbox-wrapper">
+                    <input type="checkbox" id="enableSend" checked>
+                    <span class="checkmark"></span>
+                    <span class="auto-title">Send Message</span>
+                  </label>
+                  <div class="badge">Enter</div>
+                </div>
+                <div class="auto-body">
+                  <p class="auto-desc">Send the message</p>
+                  <div class="delay-input">
+                    <label>Delay (s)</label>
+                    <input type="number" id="delaySend" value="30" min="0" max="60" step="0.5">
+                  </div>
+                </div>
+              </div>
+
+              <div class="automation-step">
+                <div class="auto-header">
+                  <label class="checkbox-wrapper">
+                    <input type="checkbox" id="enableClose" checked>
+                    <span class="checkmark"></span>
+                    <span class="auto-title">Close Tab</span>
+                  </label>
+                  <div class="badge">Ctrl+W</div>
+                </div>
+                <div class="auto-body">
+                  <p class="auto-desc">Close WhatsApp tab</p>
+                  <div class="delay-input">
+                    <label>Delay (s)</label>
+                    <input type="number" id="delayClose" value="35" min="0" max="60" step="0.5">
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
-          <p class="step-description">Click "Next Contact" button</p>
+          
+          <div class="form-actions">
+             <div class="action-group primary-actions">
+               <button type="button" class="btn btn-primary" id="openBtn">Start Batch Process</button>
+               <button type="button" class="btn btn-secondary" id="nextBtn" disabled>Next Contact</button>
+             </div>
+             <div class="action-group auto-actions">
+               <button type="button" class="btn btn-dark" id="startAutomationBtn" disabled>
+                 <i class="fas fa-play"></i> Start Automation
+               </button>
+               <button type="button" class="btn btn-danger" id="stopAutomationBtn" disabled>
+                 <i class="fas fa-stop"></i> Stop
+               </button>
+             </div>
+             <div class="action-group right-actions">
+               <button type="button" class="btn btn-ghost" id="resetBtn">Reset All</button>
+             </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="status-section">
+        <div class="card status-card">
+          <div class="status-header">
+            <div id="info" class="status-info">
+              <i class="fas fa-info-circle status-icon"></i>
+              <span>Ready to start. Enter phone numbers and click "Start Batch Process".</span>
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
         </div>
 
-        <div class="automation-step">
-          <div class="step-header">
-            <input type="checkbox" id="enablePaste" checked>
-            <label for="enablePaste">
-              <i class="fas fa-paste"></i>
-              Paste Content
-            </label>
+        <div class="card automation-status" id="automationStatus">
+          <div class="auto-status-header">
+            <div class="status-indicator"></div>
+            <div class="current-step" id="currentStep">Automation stopped</div>
           </div>
-          <div class="step-controls">
-            <label>Delay (seconds):</label>
-            <input type="number" id="delayPaste" value="25" min="0" max="60" step="0.5">
+          <div class="timers-container">
+            <div class="timer-box">
+              <div class="timer-label">Next Contact</div>
+              <div class="timer-countdown" id="timerNextContact">--</div>
+            </div>
+            <div class="timer-box">
+              <div class="timer-label">Paste Content</div>
+              <div class="timer-countdown" id="timerPaste">--</div>
+            </div>
+            <div class="timer-box">
+              <div class="timer-label">Send Message</div>
+              <div class="timer-countdown" id="timerSend">--</div>
+            </div>
+            <div class="timer-box">
+              <div class="timer-label">Close Tab</div>
+              <div class="timer-countdown" id="timerClose">--</div>
+            </div>
           </div>
-          <p class="step-description">Send Ctrl+V to paste content</p>
-        </div>
-
-        <div class="automation-step">
-          <div class="step-header">
-            <input type="checkbox" id="enableSend" checked>
-            <label for="enableSend">
-              <i class="fas fa-paper-plane"></i>
-              Send Message
-            </label>
-          </div>
-          <div class="step-controls">
-            <label>Delay (seconds):</label>
-            <input type="number" id="delaySend" value="30" min="0" max="60" step="0.5">
-          </div>
-          <p class="step-description">Send Enter to send message</p>
-        </div>
-
-        <div class="automation-step">
-          <div class="step-header">
-            <input type="checkbox" id="enableClose" checked>
-            <label for="enableClose">
-              <i class="fas fa-times"></i>
-              Close Tab
-            </label>
-          </div>
-          <div class="step-controls">
-            <label>Delay (seconds):</label>
-            <input type="number" id="delayClose" value="35" min="0" max="60" step="0.5">
-          </div>
-          <p class="step-description">Send Ctrl+W to close tab</p>
         </div>
       </div>
-
-      <div class="automation-controls">
-        <button type="button" id="startAutomationBtn" disabled>
-          <i class="fas fa-play"></i>
-          Start Automation
-        </button>
-        <button type="button" id="stopAutomationBtn" disabled>
-          <i class="fas fa-stop"></i>
-          Stop Automation
-        </button>
+      
+      <div class="tips-section">
+        <h3 class="tips-title"><i class="fas fa-lightbulb"></i> Tips for best results</h3>
+        <ul class="tips-list">
+          <li>Phone numbers can be in any format: <strong>+91-9876543210</strong>, <strong>919876543210</strong>, or <strong>9876543210</strong>.</li>
+          <li>Use country code override for local numbers (e.g., <strong>91</strong> for India).</li>
+          <li>The message will be pre-filled in WhatsApp - you can edit it before sending.</li>
+          <li>Make sure WhatsApp Web is logged in before starting the automation.</li>
+          <li>PyAutoGUI backend must be running for automation steps (Paste, Send, Close) to work.</li>
+        </ul>
       </div>
-    </div>
 
-    <div class="button-group">
-      <button type="button" id="openBtn">
-        <i class="fas fa-play"></i>
-        Start Batch Process
-      </button>
-      <button type="button" id="nextBtn" disabled>
-        <i class="fas fa-arrow-right"></i>
-        Next Contact
-      </button>
-      <button type="button" id="resetBtn">
-        <i class="fas fa-redo"></i>
-        Reset All
-      </button>
     </div>
-  </form>
-
-  <div class="status-card">
-    <div id="info">
-      <i class="fas fa-info-circle status-icon"></i>
-      <span>Ready to start. Enter phone numbers and click "Start Batch Process".</span>
-    </div>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-  </div>
-
-  <div class="automation-status" id="automationStatus">
-    <div class="current-step" id="currentStep">Automation stopped</div>
-    <div class="timers-grid">
-      <div class="timer-item">
-        <div class="timer-label">Next Contact:</div>
-        <div class="timer-countdown" id="timerNextContact">--</div>
-      </div>
-      <div class="timer-item">
-        <div class="timer-label">Paste Content:</div>
-        <div class="timer-countdown" id="timerPaste">--</div>
-      </div>
-      <div class="timer-item">
-        <div class="timer-label">Send Message:</div>
-        <div class="timer-countdown" id="timerSend">--</div>
-      </div>
-      <div class="timer-item">
-        <div class="timer-label">Close Tab:</div>
-        <div class="timer-countdown" id="timerClose">--</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="tips">
-    <h3>
-      <i class="fas fa-lightbulb"></i>
-      Usage Tips
-    </h3>
-    <ul>
-      <li>Phone numbers can be in any format: +91-9876543210, 919876543210, or 9876543210</li>
-      <li>Use country code override for local numbers (e.g., 91 for India)</li>
-      <li>The message will be pre-filled in WhatsApp - you can edit it before sending</li>
-      <li>Each click opens a new WhatsApp chat tab in your browser</li>
-      <li>Make sure WhatsApp Web is logged in before starting</li>
-      <li>You can add images or files in WhatsApp after the message loads</li>
-    </ul>
-  </div>
+  </main>
 </div>
 
 <script src="script.js"></script>
